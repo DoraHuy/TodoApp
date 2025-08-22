@@ -1,31 +1,39 @@
 'use client'
-import AddTodo from "@/app/_components/AddTodoItem/addTodoForm";
-import Todos from "@/app/_components/TodoList/todos";
+import DeleteBtn from "@/app/_components/TodoDelete/formDeleteForm";
+import TodoInput from "@/app/_components/TodoInput/formInputTodo";
+import TodoList from "@/app/_components/TodoList/todoListForm";
+import TodoShow from "@/app/_components/TodoShow/btnShowForm";
 import { useState } from "react";
 
+type Todo = {
+  id: string,
+  content: string,
+  done: boolean
+};
 
 export default function Home() {
 
-  type Todo = {
-    id: number;
-    content: string;
-  };
-  const [todo, setAddTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  const handleAddTodos = (contentTodoNew: string) => {
-    const newTodo: Todo = {
-      id: Date.now(),
-      content: contentTodoNew,
+  const handleAddTodo = (todoContent: string) => {
+    if (todoContent.trim().length === 0) {
+      alert("Bạn cần nhập chuỗi");
+      return;
     }
-    setAddTodos((prev) => [...prev, newTodo]);
-  };
+    const todo: Todo = {
+      id: Date.now().toString(),
+      content: todoContent,
+      done: false
+    }
+    setTodos([...todos, todo]);
+  }
 
   return (
     <>
-      <div className="TodoApp">
-        <AddTodo onAddTodo={handleAddTodos} />
-        <Todos todoList={todo} />
-      </div>
+      <TodoInput onAddTodo={handleAddTodo} />
+      <TodoShow />
+      <TodoList todoList={todos} />
+      <DeleteBtn />
     </>
   );
 }
