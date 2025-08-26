@@ -1,12 +1,19 @@
 'use client'
 import { BookText } from "lucide-react";
 import { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
 
+type Todo = {
+    id: string;
+    content: string;
+    done: boolean;
+};
 interface TodoInputProps {
-    onAddTodo: (content: string) => void;
+    todoList: Todo[];
+    onChangeTodos: (todos: Todo[]) => void;
 }
 
-const TodoInput = ({ onAddTodo }: TodoInputProps) => {
+const TodoInput = ({ todoList, onChangeTodos }: TodoInputProps) => {
 
     const [contentInput, setContentInput] = useState("");
 
@@ -15,15 +22,31 @@ const TodoInput = ({ onAddTodo }: TodoInputProps) => {
     }
 
     const handleClick = () => {
-        onAddTodo(contentInput);
-        setContentInput("");
+        if (contentInput.trim().length === 0) {
+            toast("Không được để rỗng");
+        } else {
+            const todo: Todo = {
+                id: Date.now().toString(),
+                content: contentInput,
+                done: false,
+            };
+            onChangeTodos([...todoList, todo]);
+            setContentInput("");
+            toast("Đã thêm vào");
+        }
 
     }
 
     const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            onAddTodo(contentInput);
+            const todo: Todo = {
+                id: Date.now().toString(),
+                content: contentInput,
+                done: false,
+            };
+            onChangeTodos([...todoList, todo]);
             setContentInput("");
+            toast("Đã thêm vào");
         }
     }
 
@@ -49,6 +72,7 @@ const TodoInput = ({ onAddTodo }: TodoInputProps) => {
                 >
                     Add new task
                 </button>
+                <ToastContainer />
             </div>
         </>
     )
