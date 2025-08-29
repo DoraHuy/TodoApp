@@ -26,7 +26,7 @@ const TodoInput = ({ todoList, onChangeTodos }: TodoInputProps) => {
             toast("Không được để rỗng");
         } else {
             const todo: Todo = {
-                id: Date.now().toString(),
+                id: crypto.randomUUID(),
                 content: contentInput,
                 done: false,
             };
@@ -40,7 +40,7 @@ const TodoInput = ({ todoList, onChangeTodos }: TodoInputProps) => {
     const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             const todo: Todo = {
-                id: Date.now().toString(),
+                id: crypto.randomUUID(),
                 content: contentInput,
                 done: false,
             };
